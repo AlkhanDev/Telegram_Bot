@@ -27,7 +27,8 @@ const parser = new Parser({
   }
 });
 
-
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const CHANNEL_ID = process.env.CHANNEL_ID; 
 
 // X/Twitter RSS feeds (direct URLs)
 const X_RSS_FEEDS =  [
