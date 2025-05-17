@@ -115,6 +115,7 @@ async function checkNewPosts() {
         if (!postedLinks.has(item.link)) {
           const message = formatPost(item, title, true);
           try {
+          
             await bot.sendMessage(CHANNEL_ID, message, { disable_web_page_preview: false });
             postedLinks.add(item.link);
             console.log(`Posted new X item from ${title}: ${item.link}`);
