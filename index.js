@@ -33,8 +33,8 @@ const CHANNEL_ID = process.env.CHANNEL_ID;
 // X/Twitter RSS feeds (direct URLs)
 const X_RSS_FEEDS =  [
   'https://rss.app/feeds/a56VIN1jgXksykeU.xml',  // AnfieldEdition feed
-  'https://rss.app/feeds/Cbr3s4Zpw573QLAz.xml',  ,
-  "https://rss.app/feeds/RKijWOOGlKwuUddl.xml" // İkinci feed
+  'https://rss.app/feeds/Cbr3s4Zpw573QLAz.xml',
+  'https://rss.app/feeds/RKijWOOGlKwuUddl.xml' 
 ];
 
 console.log('Bot configuration:', { 
@@ -133,42 +133,11 @@ async function checkNewPosts() {
     }
   }
 
-  // Then check regular RSS feeds
-  for (const feedUrl of RSS_FEEDS) {
-    const cleanFeedUrl = feedUrl.trim();
-    console.log(`Checking RSS feed: ${cleanFeedUrl}`);
-    
-    const { items, title } = await fetchRssPosts(cleanFeedUrl);
-
-    let reversed = items.reverse()
-    
-    if (items.length > 0) {
-      // Process the latest 5 posts
-      for (const item of reversed) {
-        if (!postedLinks.has(item.link)) {
-          const message = formatPost(item, title);
-          try {
-            await bot.sendMessage(CHANNEL_ID, message, { disable_web_page_preview: false });
-            postedLinks.add(item.link);
-            console.log(`Posted new RSS item from ${title}: ${item.link}`);
-            
-            // Add a small delay between messages to avoid hitting rate limits
-            await new Promise(resolve => setTimeout(resolve, 1000));
-          } catch (err) {
-            console.error('Error posting to Telegram:', err.message);
-          }
-        } else {
-          console.log(`Already posted this RSS link from ${title}: ${item.link}`);
-        }
-      }
-    } else {
-      console.log(`No new RSS posts found for ${cleanFeedUrl}`);
-    }
-  }
+  
 }
 
 // Main scheduled job: check every 5 minutes
-cron.schedule('*/5 * * * *', checkNewPosts);
+cron.schedule('*/30 * * * *', checkNewPosts);
 
 // Add command handlers
 bot.onText(/\/check/, checkNewPosts);
@@ -186,7 +155,7 @@ app.get('/status', (req, res) => {
     monitoring: {
       xFeeds: X_RSS_FEEDS.length,
     },
-    checkInterval: '5 minutes'
+    checkInterval: '30 minutes'
   });
 });
 
