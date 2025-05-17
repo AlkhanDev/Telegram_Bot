@@ -4,8 +4,7 @@ const cron = require('node-cron');
 const axios = require('axios');
 const Parser = require('rss-parser');
 const express = require('express')
-const PORT = 4000;
-const app = express();
+
 
 
 const parser = new Parser({
@@ -170,7 +169,3 @@ bot.onText(/\/status/, async (msg) => {
 // Initial run on startup
 checkNewPosts();
 
-app.get('/', (req, res) => res.send('Bot is running'));
-app.listen(PORT, () => {
-  console.log(`Fake server listening on port ${PORT}`);
-});
