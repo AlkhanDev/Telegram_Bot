@@ -3,9 +3,21 @@ const TelegramBot = require('node-telegram-bot-api');
 const cron = require('node-cron');
 const axios = require('axios');
 const Parser = require('rss-parser');
-const express = require('express')
+const express = require('express');
 
+// Create Express app and listen on port
+const app = express();
+const PORT = process.env.PORT || 3000;
 
+// Add a health check endpoint
+app.get('/', (req, res) => {
+  res.send('Telegram Bot is running!');
+});
+
+// Start the Express server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 const parser = new Parser({
   requestOptions: {
@@ -128,10 +140,12 @@ async function checkNewPosts() {
     console.log(`Checking RSS feed: ${cleanFeedUrl}`);
     
     const { items, title } = await fetchRssPosts(cleanFeedUrl);
+
+    let reversed = items.reverse()
     
     if (items.length > 0) {
       // Process the latest 5 posts
-      for (const item of items) {
+      for (const item of reversed) {
         if (!postedLinks.has(item.link)) {
           const message = formatPost(item, title);
           try {
@@ -154,7 +168,7 @@ async function checkNewPosts() {
   }
 }
 
-// Main scheduled job: every 10 minutes instead of every hour
+// Main scheduled job: check every 5 minutes
 cron.schedule('*/5 * * * *', checkNewPosts);
 
 // Add command handlers
@@ -162,10 +176,21 @@ bot.onText(/\/check/, checkNewPosts);
 
 bot.onText(/\/status/, async (msg) => {
   const chatId = msg.chat.id;
-  const statusMessage = `Bot is active and monitoring:\n- ${X_RSS_FEEDS.length} X feeds\n- ${RSS_FEEDS.length} RSS feeds\n\nChecking for new posts every 10 minutes. Use /check to manually check now.`;
+  const statusMessage = `Bot is active and monitoring:\n- ${X_RSS_FEEDS.length} X feeds\n- ${RSS_FEEDS.length} RSS feeds\n\nChecking for new posts every 5 minutes. Use /check to manually check now.`;
   await bot.sendMessage(chatId, statusMessage);
+});
+
+// Add status endpoint to check bot status via web
+app.get('/status', (req, res) => {
+  res.json({
+    status: 'active',
+    monitoring: {
+      xFeeds: X_RSS_FEEDS.length,
+      rssFeeds: RSS_FEEDS.length
+    },
+    checkInterval: '5 minutes'
+  });
 });
 
 // Initial run on startup
 checkNewPosts();
-
