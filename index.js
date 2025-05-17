@@ -3,6 +3,9 @@ const TelegramBot = require('node-telegram-bot-api');
 const cron = require('node-cron');
 const axios = require('axios');
 const Parser = require('rss-parser');
+const PORT = 4000;
+const app = express();
+
 
 const parser = new Parser({
   requestOptions: {
@@ -166,5 +169,7 @@ bot.onText(/\/status/, async (msg) => {
 // Initial run on startup
 checkNewPosts();
 
-// Placeholder for main logic
-console.log('Bot started. Use /check to manually check for new posts.');
+app.get('/', (req, res) => res.send('Bot is running'));
+app.listen(PORT, () => {
+  console.log(`Fake server listening on port ${PORT}`);
+});
