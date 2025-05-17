@@ -27,21 +27,19 @@ const parser = new Parser({
   }
 });
 
-// Environment variables
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const CHANNEL_ID = process.env.CHANNEL_ID; // e.g. @yourchannel or channel ID
-const RSS_FEEDS = process.env.RSS_FEEDS ? process.env.RSS_FEEDS.split(',') : []; // Regular RSS feeds
+
 
 // X/Twitter RSS feeds (direct URLs)
-const X_RSS_FEEDS = process.env.X_RSS_FEEDS ? process.env.X_RSS_FEEDS.split(',') : [
+const X_RSS_FEEDS =  [
   'https://rss.app/feeds/a56VIN1jgXksykeU.xml',  // AnfieldEdition feed
-  'https://rss.app/feeds/Cbr3s4Zpw573QLAz.xml'   // İkinci feed
+  'https://rss.app/feeds/Cbr3s4Zpw573QLAz.xml',  ,
+  "https://rss.app/feeds/RKijWOOGlKwuUddl.xml" // İkinci feed
 ];
 
 console.log('Bot configuration:', { 
   CHANNEL_ID, 
   X_RSS_FEEDS: X_RSS_FEEDS.length + ' X feeds configured',
-  RSS_FEEDS: RSS_FEEDS.length + ' standard feeds configured'
+ 
 });
 
 if (!BOT_TOKEN || !CHANNEL_ID || (X_RSS_FEEDS.length === 0 && RSS_FEEDS.length === 0)) {
@@ -186,7 +184,6 @@ app.get('/status', (req, res) => {
     status: 'active',
     monitoring: {
       xFeeds: X_RSS_FEEDS.length,
-      rssFeeds: RSS_FEEDS.length
     },
     checkInterval: '5 minutes'
   });
