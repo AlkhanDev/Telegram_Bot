@@ -5,9 +5,11 @@ const Parser = require('rss-parser');
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios'); // Add axios for HTTP requests
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const APP_URL = process.env.APP_URL || 'https://telegram-bot-bsct.onrender.com'; // Your app URL
 
 app.get('/', (req, res) => {
   res.send('Telegram Bot is running!');
@@ -83,6 +85,22 @@ function savePostedLinks() {
     console.error('Error saving posted links:', err.message);
   }
 }
+
+// Keep-alive function - pings the app URL every 15 minutes
+function setupKeepAlive() {
+  setInterval(async () => {
+    try {
+      console.log('Sending keep-alive request...');
+      const response = await axios.get(APP_URL);
+      console.log(`Keep-alive request sent. Status: ${response.status}`);
+    } catch (error) {
+      console.error('Error sending keep-alive request:', error.message);
+    }
+  }, 15 * 60 * 1000); // 15 minutes in milliseconds
+}
+
+// Start the keep-alive mechanism
+setupKeepAlive();
 
 // İlk başlangıçta kayıtlı linkleri yükle
 loadPostedLinks();
@@ -180,7 +198,8 @@ app.get('/status', (req, res) => {
       xFeeds: X_RSS_FEEDS.length,
       postedLinksCount: postedLinks.size
     },
-    checkInterval: '30 minutes'
+    checkInterval: '30 minutes',
+    keepAlive: 'Active (15-minute intervals)'
   });
 });
 
