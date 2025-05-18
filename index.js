@@ -116,7 +116,7 @@ async function fetchRssPosts(feedUrl, isXFeed = false) {
       }
       
       return { 
-        items: feed.items.slice(0, 5),
+        items: feed.items.slice(0, 4),
         title: sourceName
       };
     }
@@ -131,9 +131,9 @@ function formatPost(item, source, isXProfile = false) {
   content = content.replace(/<[^>]*>/g, '');
   
   if (isXProfile) {
-    return `📝 Post from @${source} on X:\n\n${content}\n\n${item.link}`;
+    return `📝 Müəllif @${source}  X üzərindən:\n\n${content}\n\n${item.link}`;
   } else {
-    return `📰 New article from ${source}:\n\n**${item.title || ''}**\n\n${content.substring(0, 200)}${content.length > 200 ? '...' : ''}\n\n${item.link}`;
+    return `📰 ${source}-dən yeni məqalə:\n\n**${item.title || ''}**\n\n${content.substring(0, 200)}${content.length > 200 ? '...' : ''}\n\n${item.link}`;
   }
 }
 
@@ -199,7 +199,7 @@ app.get('/status', (req, res) => {
       postedLinksCount: postedLinks.size
     },
     checkInterval: '30 minutes',
-    keepAlive: 'Active (15-minute intervals)'
+    keepAlive: 'Active (12-minute intervals)'
   });
 });
 
