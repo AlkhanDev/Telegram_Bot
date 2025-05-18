@@ -125,7 +125,7 @@ function setupKeepAlive() {
     } catch (error) {
       console.error('Error sending keep-alive request:', error.message);
     }
-  }, 2 * 60 * 1000); 
+  }, 12 * 60 * 1000); 
 }
 
 // Start the keep-alive mechanism
