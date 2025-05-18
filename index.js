@@ -96,7 +96,7 @@ function setupKeepAlive() {
     } catch (error) {
       console.error('Error sending keep-alive request:', error.message);
     }
-  }, 15 * 60 * 1000); // 15 minutes in milliseconds
+  }, 12 * 60 * 1000); // 15 minutes in milliseconds
 }
 
 // Start the keep-alive mechanism
