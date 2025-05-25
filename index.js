@@ -43,12 +43,13 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHANNEL_ID = process.env.CHANNEL_ID; 
 
 const X_RSS_FEEDS = [
-  'https://rss.app/feeds/a56VIN1jgXksykeU.xml',
-  'https://rss.app/feeds/Cbr3s4Zpw573QLAz.xml',
-  'https://rss.app/feeds/RKijWOOGlKwuUddl.xml',
-  'https://rss.app/feeds/5JwAesP12cAnicjl.xml',
-  'https://rss.app/feeds/cLaSwLfx0DvA5gUz.xml',
-  'https://rss.app/feeds/Mx4qlH15qpmBCaXt.xml'
+'https://rss.app/feeds/543apjQcHQ9UDRE0.xml',
+'https://rss.app/feeds/n5fD8AZUsJLEHvK9.xml',
+'https://rss.app/feeds/Pgxmwxt9glwCy1e4.xml',
+'https://rss.app/feeds/gPNv3lqwT9l6s3w4.xml',
+'https://rss.app/feeds/LZTMEI96puQSQAqr.xml',
+'https://rss.app/feeds/NIhOtdtYXHFzxYsA.xml',
+
 
 ];
 
